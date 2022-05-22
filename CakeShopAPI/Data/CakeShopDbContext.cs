@@ -10,13 +10,12 @@ namespace CakeShopAPI.Data
     {
         public CakeShopDbContext(DbContextOptions options) : base(options) { }
 
-        public DbSet<Contact> Contacts { get; set; }
-        public DbSet<Customer> Customers { get; set; }
+        //public DbSet<Contact> Contacts { get; set; }
+        //public DbSet<Customer> Customers { get; set; }
         public DbSet<User> Users { get; set; }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
-        public DbSet<ProductReview> ProductReviews { get; set; }
         public DbSet<Size> Sizes { get; set; }
 
         public DbSet<Invoice> Invoices { get; set; }

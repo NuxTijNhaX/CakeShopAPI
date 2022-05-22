@@ -18,7 +18,7 @@ namespace CakeShopAPI.Data
         [Range(0, double.MaxValue)]
         public double TotalCost { get; set; }
 
-        public int CustomerId { get; set; }
-        public virtual Customer Customer { get; set; }
+        public int UserId { get; set; }
+        public virtual User User { get; set; }
     }
 }

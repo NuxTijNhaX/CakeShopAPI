@@ -14,7 +14,15 @@ namespace CakeShopAPI.Data
         [Required]
         [MaxLength(256)]
         public string Password { get; set; }
+        [Required]
+        public string Name { get; set; }
+        public DateTime? BirthDay { get; set; }
+        [Required]
+        [MaxLength(11)]
+        public string PhoneNumber { get; set; }
+        public string Address { get; set; }
+        public string Email { get; set; }
 
-        public virtual Customer Customer { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

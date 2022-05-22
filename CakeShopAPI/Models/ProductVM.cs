@@ -16,5 +16,6 @@ namespace CakeShopAPI.Models
         public DateTime DateRealease { get; set; }
         public string Photos { get; set; }
         public string Category { get; set; }
+        public int totalPage { get; set; }
     }
 }

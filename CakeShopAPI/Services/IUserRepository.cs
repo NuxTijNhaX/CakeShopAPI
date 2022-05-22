@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace CakeShopAPI.Services
 {
-    public interface IReviewRepository
+    public interface IUserRepository
     {
-        List<ReviewVM> GetAll();
-        ReviewVM Add(int customerId, ReviewVM review);
+        UserVM Login(string email, string password);
     }
 }

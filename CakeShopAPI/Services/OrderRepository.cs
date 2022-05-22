@@ -39,7 +39,7 @@ namespace CakeShopAPI.Services
             Order newOrder = new Order()
             {
                 guidOrder = orderId,
-                CustomerId = order.CustomerId,
+                UserId = order.UserId,
                 Date = DateTime.Now,
                 TotalCost = totalCost,
             };

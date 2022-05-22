@@ -4,14 +4,16 @@ using CakeShopAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CakeShopAPI.Migrations
 {
     [DbContext(typeof(CakeShopDbContext))]
-    partial class CakeShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220522171433_delete-customer-contact-table")]
+    partial class deletecustomercontacttable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

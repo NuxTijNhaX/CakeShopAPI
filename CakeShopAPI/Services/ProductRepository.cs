@@ -93,6 +93,7 @@ namespace CakeShopAPI.Services
             }
             #endregion
 
+            int totalPage = (int)Math.Ceiling(allProducts.Count() * 1.0 / PAGE_SIZE);
             #region Paging
             allProducts = allProducts.Skip((page - 1) * PAGE_SIZE).Take(PAGE_SIZE);
             #endregion
@@ -110,7 +111,8 @@ namespace CakeShopAPI.Services
                                 NumberOfPurchases = pro.NumberOfPurchases,
                                 DateRealease = pro.DateRealease,
                                 Photos = pro.Photos,
-                                Category = proCate.Name
+                                Category = proCate.Name,
+                                totalPage = totalPage,
                             }).ToList();
 
             return products;
@@ -143,7 +145,7 @@ namespace CakeShopAPI.Services
             var product = (from pro in _dbContext.Products
                            join proCate in _dbContext.ProductCategories
                            on pro.ProductCategory.Id equals proCate.Id
-                           orderby pro.NumberOfPurchases
+                           orderby pro.NumberOfPurchases descending
                            select new ProductVM
                            {
                                Id = pro.Id,
@@ -165,7 +167,7 @@ namespace CakeShopAPI.Services
             var product = (from pro in _dbContext.Products
                            join proCate in _dbContext.ProductCategories
                            on pro.ProductCategory.Id equals proCate.Id
-                           orderby pro.DateRealease
+                           orderby pro.DateRealease descending
                            select new ProductVM
                            {
                                Id = pro.Id,

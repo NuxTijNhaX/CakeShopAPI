@@ -7,7 +7,7 @@ namespace CakeShopAPI.Models
 {
     public class OrderVM
     {
-        public int CustomerId { get; set; }
+        public int UserId { get; set; }
         public DateTime Date { get; set; }
         public List<OrderLineVM> orderLines { get; set; }
         public double TotalCost { get; set; }

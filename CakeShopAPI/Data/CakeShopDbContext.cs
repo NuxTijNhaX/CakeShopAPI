@@ -22,5 +22,12 @@ namespace CakeShopAPI.Data
         public DbSet<OrderLine> OrderLines { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>().HasIndex(u => u.PhoneNumber).IsUnique();
+        }
     }
 }

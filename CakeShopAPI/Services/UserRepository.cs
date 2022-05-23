@@ -33,5 +33,18 @@ namespace CakeShopAPI.Services
 
             return user;
         }
+
+        public void Register(string name, string phone, string password)
+        {
+            User newUser = new User()
+            {
+                Name = name,
+                PhoneNumber = phone,
+                Password = password,
+            };
+
+            _dbContext.Users.Add(newUser);
+            _dbContext.SaveChanges();
+        }
     }
 }

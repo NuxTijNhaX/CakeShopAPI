@@ -28,14 +28,30 @@ namespace CakeShopAPI.Controllers
         [HttpGet]
         public IActionResult Login(string phone, string password)
         {
-            //try
-            //{
-                return Ok(_userRepository.Login(phone, password));
-            //}
-            //catch
-            //{
-            //    return StatusCode(StatusCodes.Status500InternalServerError);
-            //}
+            try
+            {
+                var result = _userRepository.Login(phone, password);
+                if (result == null) return NotFound();
+                return Ok(result);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Register(string name, string phone, string password)
+        {
+            try
+            {
+                _userRepository.Register(name, phone, password);
+                return Ok();
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

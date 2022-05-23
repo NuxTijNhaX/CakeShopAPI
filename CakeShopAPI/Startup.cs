@@ -43,6 +43,7 @@ namespace CakeShopAPI
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             services.AddSwaggerGen(c =>
             {

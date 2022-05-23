@@ -18,6 +18,8 @@ namespace CakeShopAPI.Data
         [Range(0, double.MaxValue)]
         public double TotalCost { get; set; }
 
+        public int PaymentMethodId { get; set; }
+        public virtual PaymentMethod PaymentMethod { get; set; }
         public int UserId { get; set; }
         public virtual User User { get; set; }
     }

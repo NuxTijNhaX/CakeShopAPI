@@ -19,7 +19,8 @@ namespace CakeShopAPI.Services
         public void Create(OrderVM order)
         {
             Guid orderId = new Guid();
-            double totalCost = 0;
+            //double totalCost = 0;
+            int payMethodId = GetPayMethodId(order.PaymentMethod);
 
             foreach (var orderLine in order.orderLines)
             {
@@ -31,7 +32,7 @@ namespace CakeShopAPI.Services
                     ProductId = orderLine.ProductId
                 };
 
-                totalCost += (GetProductPrice(orderLine.ProductId) * orderLine.Quantity);
+                //totalCost += (GetProductPrice(orderLine.ProductId) * orderLine.Quantity);
 
                 _dbContext.OrderLines.Add(newOrderLine);
             }
@@ -41,8 +42,10 @@ namespace CakeShopAPI.Services
                 guidOrder = orderId,
                 UserId = order.UserId,
                 Date = DateTime.Now,
-                TotalCost = totalCost,
+                TotalCost = order.TotalCost,
+                PaymentMethodId = payMethodId,
             };
+
             _dbContext.Orders.Add(newOrder);
 
             _dbContext.SaveChanges();
@@ -72,13 +75,22 @@ namespace CakeShopAPI.Services
             return sizeId;
         }
 
-        private double GetProductPrice(int productId)
+        private int GetPayMethodId(string payMethod)
         {
-            double price = (from pro in _dbContext.Products
-                            where pro.Id == productId
-                            select pro.Price).FirstOrDefault();
+            int payMethodId = (from payMeth in _dbContext.PaymentMethods
+                               where payMeth.Name == payMethod
+                               select payMeth.Id).FirstOrDefault();
 
-            return price;
+            return payMethodId;
         }
+
+        //private double GetProductPrice(int productId)
+        //{
+        //    double price = (from pro in _dbContext.Products
+        //                    where pro.Id == productId
+        //                    select pro.Price).FirstOrDefault();
+
+        //    return price;
+        //}
     }
 }

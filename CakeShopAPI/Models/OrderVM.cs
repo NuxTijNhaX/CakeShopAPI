@@ -8,8 +8,8 @@ namespace CakeShopAPI.Models
     public class OrderVM
     {
         public int UserId { get; set; }
-        public DateTime Date { get; set; }
         public List<OrderLineVM> orderLines { get; set; }
+        public string PaymentMethod { get; set; }
         public double TotalCost { get; set; }
     }
 }

@@ -40,7 +40,7 @@ namespace CakeShopAPI.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public IActionResult Register(string name, string phone, string password)
         {
             try

@@ -4,14 +4,16 @@ using CakeShopAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CakeShopAPI.Migrations
 {
     [DbContext(typeof(CakeShopDbContext))]
-    partial class CakeShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220524085238_change-orderlines-table")]
+    partial class changeorderlinestable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,7 +28,10 @@ namespace CakeShopAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid>("OrderGuid")
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("OrderguidOrder")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("PaymentDate")
@@ -34,7 +39,7 @@ namespace CakeShopAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderGuid");
+                    b.HasIndex("OrderguidOrder");
 
                     b.ToTable("Invoices", "Sales");
                 });
@@ -73,9 +78,6 @@ namespace CakeShopAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid>("OrderGuid")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -85,13 +87,16 @@ namespace CakeShopAPI.Migrations
                     b.Property<int>("SizeId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<Guid>("guidOrder")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("OrderGuid");
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
                     b.HasIndex("SizeId");
+
+                    b.HasIndex("guidOrder");
 
                     b.ToTable("OrderLines", "Sales");
                 });
@@ -232,7 +237,7 @@ namespace CakeShopAPI.Migrations
                 {
                     b.HasOne("CakeShopAPI.Data.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderGuid")
+                        .HasForeignKey("OrderguidOrder")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -260,12 +265,6 @@ namespace CakeShopAPI.Migrations
 
             modelBuilder.Entity("CakeShopAPI.Data.OrderLine", b =>
                 {
-                    b.HasOne("CakeShopAPI.Data.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CakeShopAPI.Data.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -275,6 +274,12 @@ namespace CakeShopAPI.Migrations
                     b.HasOne("CakeShopAPI.Data.Size", "Size")
                         .WithMany()
                         .HasForeignKey("SizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CakeShopAPI.Data.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("guidOrder")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

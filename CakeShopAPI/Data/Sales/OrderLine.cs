@@ -15,10 +15,13 @@ namespace CakeShopAPI.Data
         [Range(0, int.MaxValue)]
         public int Quantity { get; set; }
 
-        public Guid guidOrder { get; set; }
+        [ForeignKey("Order")]
+        public Guid OrderGuid { get; set; }
         public virtual Order Order { get; set; }
+
         public int SizeId { get; set; }
         public virtual Size Size { get; set; }
+
         public int ProductId { get; set; }
         public virtual Product Product { get; set; }
     }

@@ -45,8 +45,7 @@ namespace CakeShopAPI.Controllers
         {
             try
             {
-                _userRepository.Register(name, phone, password);
-                return Ok();
+                return Ok(_userRepository.Register(name, phone, password));
             }
             catch
             {

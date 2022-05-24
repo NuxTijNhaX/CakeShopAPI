@@ -9,6 +9,6 @@ namespace CakeShopAPI.Services
     public interface IUserRepository
     {
         UserVM Login(string phone, string password);
-        void Register(string name, string phone, string password);
+        string Register(string name, string phone, string password);
     }
 }

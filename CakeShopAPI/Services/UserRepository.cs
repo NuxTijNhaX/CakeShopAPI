@@ -34,8 +34,18 @@ namespace CakeShopAPI.Services
             return user;
         }
 
-        public void Register(string name, string phone, string password)
+        public string Register(string name, string phone, string password)
         {
+            string result = "Đăng ký thành công";
+            int existPhone = (from user in _dbContext.Users
+                              where user.PhoneNumber == phone
+                              select user.PhoneNumber).Count();
+
+            if(existPhone > 0)
+            {
+                return result = "Số điện thoại này đã tồn tại";
+            }
+
             User newUser = new User()
             {
                 Name = name,
@@ -45,6 +55,8 @@ namespace CakeShopAPI.Services
 
             _dbContext.Users.Add(newUser);
             _dbContext.SaveChanges();
+
+            return result;
         }
     }
 }

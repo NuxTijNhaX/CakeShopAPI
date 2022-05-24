@@ -44,6 +44,7 @@ namespace CakeShopAPI
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 
             services.AddSwaggerGen(c =>
             {
@@ -61,7 +62,15 @@ namespace CakeShopAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CakeShopAPI v1"));
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
+
+            app.UseCors(builder =>
+            {
+                builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+            });
 
             app.UseRouting();
 

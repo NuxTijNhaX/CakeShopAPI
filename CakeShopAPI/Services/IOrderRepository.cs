@@ -9,7 +9,7 @@ namespace CakeShopAPI.Services
     public interface IOrderRepository
     {
         List<OrderVM> GetOrders();
-        void Create(OrderVM order);
+        PlaceOrderResponseVM Create(OrderVM order);
         void Update(OrderVM order);
         void Delete(OrderVM order);
     }

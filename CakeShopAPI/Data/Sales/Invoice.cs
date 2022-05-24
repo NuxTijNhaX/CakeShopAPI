@@ -12,8 +12,8 @@ namespace CakeShopAPI.Data
         public int Id { get; set; }
         public DateTime PaymentDate { get; set; }
 
-        
-        public int OrderId { get; set; }
+        [ForeignKey("Order")]
+        public Guid OrderGuid { get; set; }
         public virtual Order Order { get; set; }
     }
 }

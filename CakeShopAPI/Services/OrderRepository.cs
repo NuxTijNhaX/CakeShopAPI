@@ -1,5 +1,8 @@
 ﻿using CakeShopAPI.Data;
 using CakeShopAPI.Models;
+using CakeShopAPI.ThirdPartyServices.PaymentGateway.MoMo;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,27 +19,13 @@ namespace CakeShopAPI.Services
             _dbContext = dbContext;
         }
 
-        public void Create(OrderVM order)
+        public PlaceOrderResponseVM Create(OrderVM order)
         {
-            Guid orderId = new Guid();
-            //double totalCost = 0;
+            Guid orderId = Guid.NewGuid();
             int payMethodId = GetPayMethodId(order.PaymentMethod);
+            string paymentLink = null;
 
-            foreach (var orderLine in order.orderLines)
-            {
-                OrderLine newOrderLine = new OrderLine()
-                {
-                    guidOrder = orderId,
-                    Quantity = orderLine.Quantity,
-                    SizeId = GetSizeId(orderLine.Size),
-                    ProductId = orderLine.ProductId
-                };
-
-                //totalCost += (GetProductPrice(orderLine.ProductId) * orderLine.Quantity);
-
-                _dbContext.OrderLines.Add(newOrderLine);
-            }
-
+            #region CreateOrderHeader
             Order newOrder = new Order()
             {
                 guidOrder = orderId,
@@ -45,10 +34,40 @@ namespace CakeShopAPI.Services
                 TotalCost = order.TotalCost,
                 PaymentMethodId = payMethodId,
             };
-
             _dbContext.Orders.Add(newOrder);
+            #endregion
+
+            #region CreateOrderLines
+            foreach (var orderLine in order.orderLines)
+            {
+                OrderLine newOrderLine = new OrderLine()
+                {
+                    OrderGuid = orderId,
+                    Quantity = orderLine.Quantity,
+                    SizeId = GetSizeId(orderLine.Size),
+                    ProductId = orderLine.ProductId
+                };
+
+                _dbContext.OrderLines.Add(newOrderLine);
+            }
+            #endregion
 
             _dbContext.SaveChanges();
+
+
+            if(order.PaymentMethod == "momo")
+            {
+                MoMo moMo = new MoMo(order.TotalCost.ToString(), "Thanh toán tại Tiệm bánh 101", orderId.ToString());
+                JObject response = JObject.Parse(moMo.GetResponseFromMoMo());
+                paymentLink = response.GetValue("payUrl").ToString();
+            }
+
+            PlaceOrderResponseVM placeOrderResponse = new PlaceOrderResponseVM()
+            {
+                PaymentLink = paymentLink
+            };
+
+            return placeOrderResponse;
         }
 
         public void Delete(OrderVM order)
@@ -82,6 +101,18 @@ namespace CakeShopAPI.Services
                                select payMeth.Id).FirstOrDefault();
 
             return payMethodId;
+        }
+
+        private void CreateInvoice(Guid orderId)
+        {
+            Invoice invoice = new Invoice()
+            {
+                PaymentDate = DateTime.Now,
+                OrderGuid = orderId
+            };
+
+            _dbContext.Invoices.Add(invoice);
+            _dbContext.SaveChanges();
         }
 
         //private double GetProductPrice(int productId)

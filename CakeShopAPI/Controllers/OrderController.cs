@@ -25,8 +25,7 @@ namespace CakeShopAPI.Controllers
         {
             try
             {
-                _orderRepository.Create(order);
-                return Ok();
+                return Ok(_orderRepository.Create(order));
             }
             catch
             {
